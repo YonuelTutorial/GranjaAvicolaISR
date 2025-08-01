@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Sistema Avícola - Demo Frontend</title>
+<style>
+  :root {
+    --clr-bg: #f0f2f5;
+    --clr-card: #ffffff;
+    --clr-border: #dcdfe3;
+    --clr-primary: #007bff;
+    --clr-primary-hover: #0069d9;
+    --clr-success: #28a745;
+    --clr-danger: #dc3545;
+    --clr-text-dark: #333;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,.08);
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: var(--clr-bg);
+    margin: 0;
+    padding: 20px;
+    color: var(--clr-text-dark);
+  }
+
+  header {
+    max-width: 1200px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 5px;
+  }
+  header p {
+    margin: 0;
+    color: #666;
+  }
+
+  .grid {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--clr-card);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .card p {
+    margin: 0 0 20px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.35;
+  }
+  .card a {
+    align-self: flex-start;
+    text-decoration: none;
+    background: var(--clr-primary);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background .15s;
+  }
+  .card a:hover {
+    background: var(--clr-primary-hover);
+  }
+
+  /* Tag styles for grouping */
+  .tag {
+    display: inline-block;
+    margin-right: 6px;
+    margin-bottom: 8px;
+    padding: 2px 6px;
+    font-size: 11px;
+    border-radius: 4px;
+    background: #e9ecef;
+    color: #495057;
+  }
+  .tag-form { background:#d1ecf1;color:#0c5460; }
+  .tag-report { background:#fff3cd;color:#856404; }
+  .tag-master { background:#e2e3e5;color:#383d41; }
+  .tag-cond { background:#f8d7da;color:#721c24; }
+  .tag-nutri { background:#d4edda;color:#155724; }
+
+  footer {
+    max-width: 1200px;
+    margin: 40px auto 0 auto;
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+  }
+  footer a {
+    color: var(--clr-primary);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sistema Avícola – Demo Frontend</h1>
+  <p>Módulo de Fórmulas de Alimento, Condiciones Especiales, Parámetros Nutricionales y Reportes.</p>
+</header>
+
+<div class="grid">
+  <!-- Configuración de Fórmula -->
+  <div class="card">
+    <h3>Configuración de Fórmula</h3>
+    <span class="tag tag-form">Fórmula</span>
+    <p>Crear nueva fórmula de alimento por Tipo de Ave y Etapa. Agrega materiales y porcentajes.</p>
+    <a href="configuracion_formula.html">Abrir</a>
+  </div>
+
+  <!-- Gestión de Materiales -->
+  <div class="card">
+    <h3>Gestión de Materiales</h3>
+    <span class="tag tag-master">Maestros</span>
+    <p>Registrar/editar ingredientes con composición nutricional y precio por kg.</p>
+    <a href="gestion_materiales.html">Abrir</a>
+  </div>
+
+  <!-- Consulta de Fórmulas -->
+  <div class="card">
+    <h3>Consulta de Fórmulas</h3>
+    <span class="tag tag-form">Histórico</span>
+    <p>Buscar fórmulas vigentes o históricas por fecha, tipo de ave y etapa.</p>
+    <a href="consulta_formulas.html">Abrir</a>
+  </div>
+
+  <!-- Asignar Fórmula a Lotes -->
+  <div class="card">
+    <h3>Asignar Fórmula a Lotes</h3>
+    <span class="tag tag-form">Aplicación</span>
+    <p>Selecciona una fórmula y aplícala a uno o más lotes de aves con fecha de inicio.</p>
+    <a href="asignacion_formula_lotes.html">Abrir</a>
+  </div>
+
+  <!-- Comparador de Fórmulas -->
+  <div class="card">
+    <h3>Comparador de Fórmulas</h3>
+    <span class="tag tag-report">Comparar</span>
+    <p>Compara porcentajes de ingredientes entre dos fórmulas (base o condicionadas).</p>
+    <a href="comparador_formulas.html">Abrir</a>
+  </div>
+
+  <!-- Historial de Cambios -->
+  <div class="card">
+    <h3>Historial de Cambios</h3>
+    <span class="tag tag-report">Auditoría</span>
+    <p>Lista de modificaciones registradas en fórmulas: quién, cuándo y qué cambió.</p>
+    <a href="historial_cambios.html">Abrir</a>
+  </div>
+
+  <!-- Detalle de Fórmula -->
+  <div class="card">
+    <h3>Detalle de Fórmula</h3>
+    <span class="tag tag-form">Vista</span>
+    <p>Ficha completa de una fórmula: ingredientes, porcentajes, nutrientes y estado.</p>
+    <a href="detalle_formula.html">Abrir</a>
+  </div>
+
+  <!-- Reporte de Asignaciones -->
+  <div class="card">
+    <h3>Reporte de Asignaciones</h3>
+    <span class="tag tag-report">Reporte</span>
+    <p>Histórico de qué fórmula se aplicó a cada lote, con fecha y responsable.</p>
+    <a href="reporte_asignaciones.html">Abrir</a>
+  </div>
+
+  <!-- Condiciones Especiales -->
+  <div class="card">
+    <h3>Condiciones Especiales</h3>
+    <span class="tag tag-cond">Condiciones</span>
+    <p>CRUD de condiciones como Estrés Calórico o Enfermedad Digestiva.</p>
+    <a href="condiciones_especiales.html">Abrir</a>
+  </div>
+
+  <!-- Fórmula Condicionada -->
+  <div class="card">
+    <h3>Fórmula Condicionada</h3>
+    <span class="tag tag-cond">Ajustes</span>
+    <p>Ajusta una fórmula base cuando se activa una condición especial.</p>
+    <a href="formula_condicionada.html">Abrir</a>
+  </div>
+
+  <!-- Histórico Fórmulas Condicionadas -->
+  <div class="card">
+    <h3>Histórico Condicionadas</h3>
+    <span class="tag tag-report">Histórico</span>
+    <p>Consulta qué fórmula condicionada estaba vigente en una fecha específica.</p>
+    <a href="historico_formulas_condicionadas.html">Abrir</a>
+  </div>
+
+  <!-- Parámetros Nutricionales -->
+  <div class="card">
+    <h3>Parámetros Nutricionales</h3>
+    <span class="tag tag-nutri">Nutrientes</span>
+    <p>Define rangos de proteína, energía, calcio, etc. por tipo de ave y etapa.</p>
+    <a href="parametros_nutricionales.html">Abrir</a>
+  </div>
+
+  <!-- Requerimiento de Alimento -->
+  <div class="card">
+    <h3>Requerimiento de Alimento</h3>
+    <span class="tag tag-report">Cálculo</span>
+    <p>Calcula kg totales y costo estimado para alimentar tus lotes.</p>
+    <a href="requerimiento_alimento.html">Abrir</a>
+  </div>
+
+  <!-- Catálogo Tipo de Ave (opcional demo) -->
+  <div class="card">
+    <h3>Catálogo Tipos de Ave</h3>
+    <span class="tag tag-master">Maestros</span>
+    <p>Demo: CRUD de tipos de ave (placeholder). Úsalo si lo incluyes en la presentación.</p>
+    <a href="tipos_ave.html">Abrir</a>
+  </div>
+
+  <!-- Catálogo Etapas de Desarrollo (opcional demo) -->
+  <div class="card">
+    <h3>Catálogo Etapas</h3>
+    <span class="tag tag-master">Maestros</span>
+    <p>Demo: CRUD de etapas de desarrollo (Inicio, Crecimiento, Producción...).</p>
+    <a href="etapas_desarrollo.html">Abrir</a>
+  </div>
+
+  <!-- Auditoría Global (opcional demo) -->
+  <div class="card">
+    <h3>Auditoría Global</h3>
+    <span class="tag tag-report">Auditoría</span>
+    <p>Consulta estado histórico de materiales, fórmulas, parámetros o condiciones.</p>
+    <a href="auditoria_global.html">Abrir</a>
+  </div>
+</div><!-- /.grid -->
+
+<footer>
+  Demo frontend estático. No hay backend conectado.
+</footer>
+</body>
+</html>

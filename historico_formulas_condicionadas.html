@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Histórico Fórmulas Condicionadas</title>
+<style>
+  :root {
+    --clr-bg: #eef2f5;
+    --clr-card: #ffffff;
+    --clr-border: #dcdfe3;
+    --clr-primary: #007bff;
+    --clr-primary-hover: #0069d9;
+    --clr-success: #28a745;
+    --clr-danger: #dc3545;
+    --clr-muted: #6c757d;
+    --radius: 8px;
+    --shadow: 0 0 10px rgba(0,0,0,.08);
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background: var(--clr-bg);
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  .container {
+    max-width: 1100px;
+    margin: auto;
+    background: var(--clr-card);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  h2 { margin-top: 0; text-align: center; }
+
+  /* Filter bar */
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 16px;
+    margin-bottom: 25px;
+  }
+  .filters label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .filters select,
+  .filters input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+  }
+  .btn-filtrar {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: 10px 20px;
+    background: var(--clr-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-filtrar:hover { background: var(--clr-primary-hover); }
+
+  /* Results table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+  }
+  th, td {
+    border: 1px solid var(--clr-border);
+    padding: 10px;
+    text-align: center;
+  }
+  th {
+    background: var(--clr-primary);
+    color: #fff;
+  }
+  td.left { text-align: left; }
+  .status-active { color: var(--clr-success); font-weight: bold; }
+  .status-inactive { color: var(--clr-danger); font-weight: bold; }
+  .status-base { color: var(--clr-muted); font-style: italic; }
+
+  /* Details disclosure */
+  details {
+    margin-top: 10px;
+    background: #fafbfc;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    padding: 10px;
+  }
+  details summary {
+    cursor: pointer;
+    font-weight: bold;
+    outline: none;
+  }
+  .detail-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+  }
+  .detail-table th,
+  .detail-table td {
+    border: 1px solid var(--clr-border);
+    padding: 8px;
+    text-align: center;
+  }
+  .detail-table th {
+    background: #eef2f5;
+  }
+  .legend {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.4;
+  }
+  .legend span { display: inline-block; margin-right: 15px; }
+  .lg-active { color: var(--clr-success); font-weight:bold; }
+  .lg-inactive { color: var(--clr-danger); font-weight:bold; }
+  .lg-base { color: var(--clr-muted); font-style:italic; }
+
+  @media (max-width:600px) {
+    th, td { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Histórico de Fórmulas Condicionadas</h2>
+
+  <!-- Filters -->
+  <form class="filters">
+    <div>
+      <label for="tipo-ave">Tipo de Ave</label>
+      <select id="tipo-ave" name="tipo-ave">
+        <option value="">Todos</option>
+        <option value="pollo-engorde">Pollo de engorde</option>
+        <option value="ponedora">Gallina ponedora</option>
+        <option value="pavo">Pavo</option>
+      </select>
+    </div>
+    <div>
+      <label for="etapa">Etapa</label>
+      <select id="etapa" name="etapa">
+        <option value="">Todas</option>
+        <option value="inicio">Inicio</option>
+        <option value="crecimiento">Crecimiento</option>
+        <option value="produccion">Producción / Postura</option>
+      </select>
+    </div>
+    <div>
+      <label for="condicion">Condición Especial</label>
+      <select id="condicion" name="condicion">
+        <option value="">Cualquiera</option>
+        <option value="estrescalor">Estrés Calórico</option>
+        <option value="digestiva">Enfermedad Digestiva</option>
+        <option value="altaprod">Alta Producción</option>
+      </select>
+    </div>
+    <div>
+      <label for="fecha-consulta">Fecha de Consulta</label>
+      <input type="date" id="fecha-consulta" name="fecha-consulta" />
+    </div>
+    <button type="submit" class="btn-filtrar">Filtrar</button>
+  </form>
+
+  <!-- Results table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo Ave</th>
+        <th>Etapa</th>
+        <th>Condición</th>
+        <th>Vigencia</th>
+        <th>Estado en Fecha Consultada</th>
+        <th>Detalle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Ejemplo 1: Condición activa en fecha -->
+      <tr>
+        <td>Pollo de engorde</td>
+        <td>Crecimiento</td>
+        <td>Estrés Calórico</td>
+        <td>2025-06-01 a 2025-08-31</td>
+        <td class="status-active">Activa</td>
+        <td><a href="#det1">Ver</a></td>
+      </tr>
+      <!-- Ejemplo 2: Condición no vigente en fecha, pero fórmula base sí -->
+      <tr>
+        <td>Gallina ponedora</td>
+        <td>Producción</td>
+        <td>Enfermedad Digestiva</td>
+        <td>2025-04-10 a 2025-05-05</td>
+        <td class="status-inactive">No vigente</td>
+        <td><a href="#det2">Ver</a></td>
+      </tr>
+      <!-- Ejemplo 3: Sin condición (usa base) -->
+      <tr>
+        <td>Pollo de engorde</td>
+        <td>Inicio</td>
+        <td>—</td>
+        <td>Según fórmula base</td>
+        <td class="status-base">Base aplicada</td>
+        <td><a href="#det3">Ver</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Details blocks -->
+  <details id="det1">
+    <summary>Detalle: Pollo de engorde / Crecimiento / Estrés Calórico</summary>
+    <div style="margin-top:10px;">
+      Vigencia: 2025-06-01 a 2025-08-31<br>
+      Fórmula base: Crecimiento Pollos v2025-05-10<br>
+      Justificación: Ajuste para altas temperaturas; reducción de energía, adición de electrolitos.
+    </div>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Ingrediente</th>
+          <th>% Base</th>
+          <th>% Condición</th>
+          <th>Diferencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Maíz</td>
+          <td>55.00</td>
+          <td>52.00</td>
+          <td>-3.00</td>
+        </tr>
+        <tr>
+          <td>Soya</td>
+          <td>30.00</td>
+          <td>32.00</td>
+          <td>+2.00</td>
+        </tr>
+        <tr>
+          <td>Premezcla</td>
+          <td>15.00</td>
+          <td>14.00</td>
+          <td>-1.00</td>
+        </tr>
+        <tr>
+          <td>Electrolitos</td>
+          <td>0.00</td>
+          <td>2.00</td>
+          <td>+2.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details id="det2">
+    <summary>Detalle: Gallina ponedora / Producción / Enfermedad Digestiva (No vigente)</summary>
+    <div style="margin-top:10px;">
+      Vigencia histórica: 2025-04-10 a 2025-05-05.<br>
+      Fecha consultada fuera de rango; se aplicó fórmula base **Postura 2025**.<br>
+      Notas: Se incrementó fibra y probióticos durante brote digestivo.
+    </div>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Ingrediente</th>
+          <th>% Base</th>
+          <th>% Ajuste histórico</th>
+          <th>Diferencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Maíz</td>
+          <td>50.00</td>
+          <td>48.00</td>
+          <td>-2.00</td>
+        </tr>
+        <tr>
+          <td>Soya</td>
+          <td>35.00</td>
+          <td>33.00</td>
+          <td>-2.00</td>
+        </tr>
+        <tr>
+          <td>Fibra adicionada</td>
+          <td>0.00</td>
+          <td>4.00</td>
+          <td>+4.00</td>
+        </tr>
+        <tr>
+          <td>Premezcla</td>
+          <td>15.00</td>
+          <td>15.00</td>
+          <td>0.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details id="det3">
+    <summary>Detalle: Pollo de engorde / Inicio (sin condición especial)</summary>
+    <div style="margin-top:10px;">
+      No se encontró condición especial vigente para la fecha consultada.<br>
+      Se aplicó la fórmula base: **Inicio Pollos v2025-03-01**.
+    </div>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Ingrediente</th>
+          <th>% Base</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Maíz</td>
+          <td>60.00</td>
+        </tr>
+        <tr>
+          <td>Soya</td>
+          <td>28.00</td>
+        </tr>
+        <tr>
+          <td>Premezcla</td>
+          <td>12.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
+
+  <div class="legend">
+    <strong>Leyenda:</strong>
+    <span class="lg-active">Activa</span>
+    <span class="lg-inactive">No vigente en la fecha consultada</span>
+    <span class="lg-base">Base aplicada (sin condición)</span>
+  </div>
+</div>
+</body>
+</html>

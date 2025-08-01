@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Consulta de Fórmulas</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+:root{--bg:#f3f6fa;--card:#fff;--b:#dcdfe3;--p:#007bff;--p-h:#0069d9;--rad:8px;--sh:0 0 10px rgba(0,0,0,.08);}
+body{font-family:Arial,sans-serif;background:var(--bg);margin:0;padding:20px;color:#333;}
+.container{max-width:1100px;margin:auto;background:var(--card);padding:30px;border-radius:var(--rad);box-shadow:var(--sh);}
+h2{text-align:center;margin-top:0;}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px;}
+.filters label{font-weight:bold;display:block;margin-bottom:5px;}
+.filters select,.filters input[type="date"],.filters input[type="text"]{width:100%;padding:10px;border:1px solid var(--b);border-radius:var(--rad);}
+.btn-filtrar{grid-column:1/-1;justify-self:start;padding:10px 20px;background:var(--p);color:#fff;border:none;border-radius:var(--rad);cursor:pointer;font-weight:bold;}
+.btn-filtrar:hover{background:var(--p-h);}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th,td{border:1px solid var(--b);padding:10px;text-align:center;}
+th{background:#eef2f5;}
+td.left{text-align:left;}
+.badge-cond{background:#ffc107;color:#856404;padding:2px 6px;border-radius:4px;font-size:11px;}
+.badge-vig{background:#28a745;color:#fff;padding:2px 6px;border-radius:4px;font-size:11px;}
+.badge-hist{background:#6c757d;color:#fff;padding:2px 6px;border-radius:4px;font-size:11px;}
+.actions{display:flex;justify-content:center;gap:5px;}
+.actions a,.actions button{padding:5px 10px;font-size:13px;border:none;border-radius:var(--rad);cursor:pointer;color:#fff;text-decoration:none;display:inline-block;}
+.btn-det{background:var(--p);} .btn-det:hover{background:var(--p-h);}
+.btn-dup{background:#17a2b8;} .btn-dup:hover{background:#138496;}
+.back{display:inline-block;margin-bottom:15px;text-decoration:none;color:var(--p);} .back:hover{text-decoration:underline;}
+@media(max-width:600px){th,td{font-size:12px;padding:8px;}}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">&larr; Volver</a>
+  <h2>Consulta de Fórmulas</h2>
+
+  <form class="filters">
+    <div>
+      <label for="f-tipo">Tipo de Ave</label>
+      <select id="f-tipo">
+        <option value="">Todos</option>
+        <option value="1">Pollo de engorde</option>
+        <option value="2">Gallina ponedora</option>
+      </select>
+    </div>
+    <div>
+      <label for="f-etapa">Etapa</label>
+      <select id="f-etapa">
+        <option value="">Todas</option>
+        <option value="1">Inicio</option>
+        <option value="2">Crecimiento</option>
+        <option value="3">Producción</option>
+      </select>
+    </div>
+    <div>
+      <label for="f-buscar">Buscar por nombre / comentario</label>
+      <input type="text" id="f-buscar" placeholder="Ej. Inicial Pollos">
+    </div>
+    <div>
+      <label for="f-fecha">Fórmula vigente al (fecha)</label>
+      <input type="date" id="f-fecha">
+    </div>
+    <button type="submit" class="btn-filtrar">Filtrar</button>
+  </form>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo Ave</th>
+          <th>Etapa</th>
+          <th>Vigencia</th>
+          <th>Estado</th>
+          <th>Condiciones</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Ejemplo vigente -->
+        <tr>
+          <td class="left">Pollo de engorde</td>
+          <td>Crecimiento</td>
+          <td>2025-06-15 a —</td>
+          <td><span class="badge-vig">Vigente</span></td>
+          <td><span class="badge-cond">Estrés Calórico</span></td>
+          <td class="actions">
+            <a class="btn-det" href="detalle_formula.html">Detalle</a>
+            <button class="btn-dup">Duplicar</button>
+          </td>
+        </tr>
+        <!-- Ejemplo histórico -->
+        <tr>
+          <td class="left">Pollo de engorde</td>
+          <td>Crecimiento</td>
+          <td>2025-01-01 a 2025-06-14</td>
+          <td><span class="badge-hist">Histórico</span></td>
+          <td>—</td>
+          <td class="actions">
+            <a class="btn-det" href="detalle_formula.html">Detalle</a>
+            <button class="btn-dup">Duplicar</button>
+          </td>
+        </tr>
+        <tr>
+          <td class="left">Gallina ponedora</td>
+          <td>Producción</td>
+          <td>2025-05-10 a —</td>
+          <td><span class="badge-vig">Vigente</span></td>
+          <td><span class="badge-cond">Digestiva Hist.</span></td>
+          <td class="actions">
+            <a class="btn-det" href="detalle_formula.html">Detalle</a>
+            <button class="btn-dup">Duplicar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

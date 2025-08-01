@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nueva Fórmula de Alimento</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+:root{
+  --bg:#f4f6f8;--card:#fff;--b:#dcdfe3;--p:#007bff;--p-h:#0069d9;
+  --suc:#28a745;--war:#ffc107;--err:#dc3545;--rad:8px;--sh:0 0 10px rgba(0,0,0,.08);
+}
+body{font-family:Arial,sans-serif;background:var(--bg);margin:0;padding:20px;color:#333;}
+.container{max-width:1100px;margin:auto;background:var(--card);padding:30px;border-radius:var(--rad);box-shadow:var(--sh);}
+h2{text-align:center;margin-top:0;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:20px;}
+.grid label{font-weight:bold;display:block;margin-bottom:5px;}
+.grid select,.grid input[type="date"],.grid input[type="text"]{width:100%;padding:10px;border:1px solid var(--b);border-radius:var(--rad);}
+textarea{width:100%;min-height:80px;padding:10px;border:1px solid var(--b);border-radius:var(--rad);resize:vertical;}
+.table-wrap{overflow-x:auto;margin-top:20px;}
+table{width:100%;border-collapse:collapse;}
+th,td{border:1px solid var(--b);padding:8px;text-align:center;}
+th{background:#eef2f5;font-size:14px;}
+td.left{text-align:left;}
+input.pct{width:80px;padding:4px;text-align:right;}
+.sum-box{margin-top:10px;padding:12px;border-radius:var(--rad);font-size:14px;}
+.sum-ok{background:#d4edda;border:1px solid #c3e6cb;color:#155724;}
+.sum-warn{background:#fff3cd;border:1px solid #ffeeba;color:#856404;}
+.sum-err{background:#f8d7da;border:1px solid #f5c6cb;color:#721c24;}
+.nutri-compare{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+.ncard{background:#fafbfc;border:1px solid var(--b);border-radius:var(--rad);padding:10px;text-align:center;font-size:14px;}
+.npass{color:var(--suc);font-weight:bold;}
+.nfail{color:var(--err);font-weight:bold;}
+.actions{margin-top:25px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+.actions button{padding:12px 20px;border:none;border-radius:var(--rad);font-weight:bold;color:#fff;cursor:pointer;}
+.btn-save{background:var(--suc);}
+.btn-save:hover{background:#218838;}
+.btn-cancel{background:#6c757d;}
+.btn-cancel:hover{background:#5a6268;}
+.back{display:inline-block;margin-bottom:15px;text-decoration:none;color:var(--p);}
+.back:hover{text-decoration:underline;}
+@media(max-width:600px){th,td{font-size:12px;padding:6px;}}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">&larr; Volver</a>
+  <h2>Nueva Fórmula de Alimento</h2>
+
+  <form>
+    <div class="grid">
+      <div>
+        <label for="tipo-ave">Tipo de Ave</label>
+        <select id="tipo-ave" required>
+          <option value="">Seleccionar...</option>
+          <option value="1">Pollo de engorde</option>
+          <option value="2">Gallina ponedora</option>
+        </select>
+      </div>
+      <div>
+        <label for="etapa">Etapa</label>
+        <select id="etapa" required>
+          <option value="">Seleccionar...</option>
+          <option value="1">Inicio</option>
+          <option value="2">Crecimiento</option>
+          <option value="3">Producción</option>
+        </select>
+      </div>
+      <div>
+        <label for="fecha-inicio">Fecha Inicio Vigencia</label>
+        <input type="date" id="fecha-inicio" required>
+      </div>
+      <div>
+        <label for="fecha-fin">Fecha Fin (opcional)</label>
+        <input type="date" id="fecha-fin">
+      </div>
+
+    </div>
+
+    <label for="obs"><strong>Observaciones</strong></label>
+    <textarea id="obs" placeholder="Notas técnicas, objetivos nutricionales, etc."></textarea>
+
+    <!-- Ingredientes -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ingrediente</th>
+            <th>%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left">Maíz</td>
+            <td><input class="pct" type="text" value="55.00"></td>
+          </tr>
+          <tr>
+            <td class="left">Soya</td>
+            <td><input class="pct" type="text" value="30.00"></td>
+          </tr>
+          <tr>
+            <td class="left">Premezcla</td>
+            <td><input class="pct" type="text" value="15.00"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Suma porcentajes (usa clase sum-ok / sum-warn / sum-err según caso) -->
+    <div class="sum-box sum-ok">
+      Suma de ingredientes: <strong>100.00%</strong>. Correcto.
+    </div>
+
+    <!-- Comparación con parámetros nutricionales -->
+    <div class="nutri-compare">
+      <div class="ncard">
+        Prot% Calc: <strong>18.2</strong><br>
+        Objetivo: 19–21<br>
+        <span class="nfail">Bajo</span>
+      </div>
+      <div class="ncard">
+        Energía Calc: <strong>3100</strong><br>
+        Objetivo: 3000–3200<br>
+        <span class="npass">OK</span>
+      </div>
+      <div class="ncard">
+        Ca% Calc: <strong>1.05</strong><br>
+        Obj ≥ 1.00<br>
+        <span class="npass">OK</span>
+      </div>
+    </div>
+<script>
+// Simulación de consulta a la base de datos
+const materialesRecomendados = {
+  "1_1": [
+    { material: "Maíz", nutriente: "Energía", valor: "3300", unidad: "Kcal/kg" },
+    { material: "Soya", nutriente: "Proteína", valor: "44.00", unidad: "%" },
+    { material: "Premezcla", nutriente: "Calcio", valor: "1.2", unidad: "%" }
+  ],
+  "2_3": [
+    { material: "Harina de pescado", nutriente: "Proteína", valor: "60.00", unidad: "%" },
+    { material: "Carbonato", nutriente: "Calcio", valor: "38.00", unidad: "%" },
+    { material: "Maíz", nutriente: "Energía", valor: "3300", unidad: "Kcal/kg" }
+  ]
+};
+
+document.getElementById('tipo-ave').addEventListener('change', updateRecomendados);
+document.getElementById('etapa').addEventListener('change', updateRecomendados);
+
+function updateRecomendados() {
+  const tipoAve = document.getElementById('tipo-ave').value;
+  const etapa = document.getElementById('etapa').value;
+  const tbody = document.getElementById('recomendados-body');
+  tbody.innerHTML = '';
+
+  if (tipoAve && etapa) {
+    const key = `${tipoAve}_${etapa}`;
+    const lista = materialesRecomendados[key] || [];
+
+    if (lista.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4">No hay sugerencias para esta combinación.</td></tr>';
+    } else {
+      lista.forEach(item => {
+        const row = `<tr>
+          <td class="left">${item.material}</td>
+          <td>${item.nutriente}</td>
+          <td>${item.valor}</td>
+          <td>${item.unit || item.unidad}</td>
+        </tr>`;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    }
+  } else {
+    tbody.innerHTML = '<tr><td colspan="4">Seleccione tipo de ave y etapa para ver sugerencias...</td></tr>';
+  }
+}
+</script>
+
+    <!-- Materiales recomendados -->
+<div id="materiales-recomendados" class="table-wrap" style="margin-top: 30px;">
+  <h3>Materiales Recomendados</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th>Nutriente</th>
+        <th>Valor</th>
+        <th>Unidad</th>
+      </tr>
+    </thead>
+    <tbody id="recomendados-body">
+      <tr><td colspan="4">Seleccione tipo de ave y etapa para ver sugerencias...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+    <div class="actions">
+      <button type="submit" class="btn-save">Guardar Fórmula</button>
+      <a href="index.html" class="btn-cancel">Cancelar</a>
+    </div>
+  </form>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Requerimiento de Alimento</title>
+<style>
+  :root {
+    --clr-bg: #f4f6f8;
+    --clr-card: #ffffff;
+    --clr-border: #dcdfe3;
+    --clr-primary: #007bff;
+    --clr-primary-hover: #0069d9;
+    --clr-success: #28a745;
+    --clr-success-hover: #218838;
+    --clr-info: #17a2b8;
+    --clr-info-hover: #138496;
+    --clr-warning: #ffc107;
+    --clr-danger: #dc3545;
+    --radius: 8px;
+    --shadow: 0 0 10px rgba(0,0,0,.08);
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background: var(--clr-bg);
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  .container {
+    max-width: 1100px;
+    margin: auto;
+    background: var(--clr-card);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  h2 {
+    text-align: center;
+    margin-top: 0;
+  }
+
+  /* Form grid */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 16px;
+    margin-bottom: 25px;
+  }
+  .form-grid label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .form-grid select,
+  .form-grid input[type="number"],
+  .form-grid input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+  }
+
+  .inline-note {
+    font-size: 13px;
+    color: #666;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .btn-run {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: 12px 24px;
+    background: var(--clr-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-run:hover { background: var(--clr-primary-hover); }
+
+  /* Summary cards */
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+    gap: 16px;
+    margin: 25px 0;
+  }
+  .card {
+    background: #fafbfc;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+  }
+  .card h4 {
+    margin: 0 0 5px;
+    font-size: 15px;
+    color: #555;
+  }
+  .card strong {
+    font-size: 20px;
+    display: block;
+    color: #000;
+  }
+
+  /* Alert */
+  .alert {
+    margin-top: 10px;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 14px;
+  }
+  .alert-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+  }
+  .alert-success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+  }
+  .alert-danger {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+
+  /* Results table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+  }
+  th, td {
+    border: 1px solid var(--clr-border);
+    padding: 10px;
+    text-align: center;
+  }
+  th {
+    background: #eef2f5;
+    font-size: 14px;
+  }
+  td.left { text-align: left; }
+
+  /* Totals row */
+  tfoot td {
+    font-weight: bold;
+    background: #fafbfc;
+  }
+
+  /* Export */
+  .export-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .export-actions button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--radius);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .btn-export-excel { background: var(--clr-success); }
+  .btn-export-excel:hover { background: var(--clr-success-hover); }
+  .btn-export-pdf { background: var(--clr-info); }
+  .btn-export-pdf:hover { background: var(--clr-info-hover); }
+
+  @media (max-width:600px){
+    th, td { font-size: 12px; padding: 8px; }
+    .summary-cards { grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Requerimiento de Alimento</h2>
+
+  <!-- Form -->
+  <form class="form-grid">
+    <div>
+      <label for="tipo-ave">Tipo de Ave</label>
+      <select id="tipo-ave" name="tipo-ave">
+        <option value="">Seleccionar...</option>
+        <option value="pollo">Pollo de engorde</option>
+        <option value="ponedora">Gallina ponedora</option>
+        <option value="pavo">Pavo</option>
+      </select>
+    </div>
+    <div>
+      <label for="etapa">Etapa</label>
+      <select id="etapa" name="etapa">
+        <option value="">Seleccionar...</option>
+        <option value="inicio">Inicio</option>
+        <option value="crecimiento">Crecimiento</option>
+        <option value="produccion">Producción / Postura</option>
+      </select>
+    </div>
+    <div>
+      <label for="formula">Fórmula</label>
+      <select id="formula" name="formula">
+        <option value="">Seleccionar...</option>
+        <option value="fb1">Crecimiento Pollos (Base)</option>
+        <option value="fc1">Crecimiento Pollos + Estrés Calórico</option>
+        <option value="fb2">Postura 2025 (Base)</option>
+      </select>
+      <span class="inline-note">Si hay condición activa, aparecerá marcada.</span>
+    </div>
+    <div>
+      <label for="cantidad">Cantidad de Aves</label>
+      <input type="number" id="cantidad" name="cantidad" min="0" placeholder="Ej. 500" />
+    </div>
+    <div>
+      <label for="consumo">Consumo diario por ave (g)</label>
+      <input type="number" id="consumo" name="consumo" min="0" step="1" placeholder="Ej. 100" />
+      <span class="inline-note">Puedes usar valores guías: Pollos 0-14d ≈ 40g, >35d ≈ 100g, etc.</span>
+    </div>
+    <div>
+      <label for="dias">Número de días</label>
+      <input type="number" id="dias" name="dias" min="1" step="1" value="7" />
+    </div>
+    <button type="submit" class="btn-run">Calcular</button>
+  </form>
+
+  <!-- Summary (datos simulados demo) -->
+  <div class="summary-cards">
+    <div class="card">
+      <h4>Aves</h4>
+      <strong>500</strong>
+    </div>
+    <div class="card">
+      <h4>Consumo total (kg)</h4>
+      <strong>350.00</strong>
+    </div>
+    <div class="card">
+      <h4>Costo total</h4>
+      <strong>$ 12,845.00</strong>
+    </div>
+    <div class="card">
+      <h4>Fórmula usada</h4>
+      <strong>Crec. + Estrés</strong>
+    </div>
+  </div>
+
+  <!-- Alert de porcentaje (demo: correcto) -->
+  <div class="alert alert-success">
+    La suma de porcentajes de la fórmula es 100%. Cálculo válido.
+  </div>
+  <!-- Si desearas mostrar un error: cambia a alert-warning o alert-danger -->
+
+  <!-- Results table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Ingrediente</th>
+        <th>% Fórmula</th>
+        <th>Kg Requeridos</th>
+        <th>Precio / kg</th>
+        <th>Costo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="left">Maíz</td>
+        <td>52.00</td>
+        <td>182.00</td>
+        <td>0.85</td>
+        <td>154.70</td>
+      </tr>
+      <tr>
+        <td class="left">Soya</td>
+        <td>32.00</td>
+        <td>112.00</td>
+        <td>0.95</td>
+        <td>106.40</td>
+      </tr>
+      <tr>
+        <td class="left">Premezcla</td>
+        <td>14.00</td>
+        <td>49.00</td>
+        <td>1.80</td>
+        <td>88.20</td>
+      </tr>
+      <tr>
+        <td class="left">Electrolitos</td>
+        <td>2.00</td>
+        <td>7.00</td>
+        <td>4.20</td>
+        <td>29.40</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td class="left">TOTAL</td>
+        <td>100.00</td>
+        <td>350.00</td>
+        <td>—</td>
+        <td>378.70</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- Export / acciones -->
+  <div class="export-actions">
+    <button type="button" class="btn-export-excel">Exportar Excel</button>
+    <button type="button" class="btn-export-pdf">Exportar PDF</button>
+  </div>
+</div>
+</body>
+</html>

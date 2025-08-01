@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Parámetros Nutricionales Objetivo</title>
+<style>
+  :root {
+    --clr-bg: #f4f6f8;
+    --clr-card: #ffffff;
+    --clr-border: #dcdfe3;
+    --clr-primary: #007bff;
+    --clr-primary-hover: #0069d9;
+    --clr-success: #28a745;
+    --clr-success-hover: #218838;
+    --clr-info: #17a2b8;
+    --clr-info-hover: #138496;
+    --clr-danger: #dc3545;
+    --radius: 8px;
+    --shadow: 0 0 10px rgba(0,0,0,.08);
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background: var(--clr-bg);
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  .container {
+    max-width: 1100px;
+    margin: auto;
+    background: var(--clr-card);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  h2 {
+    text-align: center;
+    margin-top: 0;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 16px;
+    margin-bottom: 25px;
+    align-items: end;
+  }
+  .filter-bar label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .filter-bar select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+  }
+  .btn-new {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: 10px 20px;
+    background: var(--clr-success);
+    color: #fff;
+    border: none;
+    border-radius: var(--clr-radius,8px);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-new:hover { background: var(--clr-success-hover); }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+  }
+  th, td {
+    border: 1px solid var(--clr-border);
+    padding: 10px;
+    text-align: center;
+  }
+  th {
+    background: var(--clr-primary);
+    color: #fff;
+    font-size: 14px;
+  }
+  td.left { text-align: left; }
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  .actions button {
+    padding: 5px 10px;
+    font-size: 13px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: #fff;
+  }
+  .btn-edit { background: var(--clr-primary); }
+  .btn-edit:hover { background: var(--clr-primary-hover); }
+  .btn-del { background: var(--clr-danger); }
+  .btn-del:hover { background: #c82333; }
+  .btn-ver { background: var(--clr-info); }
+  .btn-ver:hover { background: var(--clr-info-hover); }
+
+  /* Toggle form panel */
+  #toggleParam { display: none; }
+  .form-panel {
+    margin-top: 30px;
+    padding: 25px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    background: #fafbfc;
+    display: none;
+  }
+  #toggleParam:checked ~ .form-panel {
+    display: block;
+  }
+
+  .form-panel h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  label.field-label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+  input[type="number"],
+  textarea,
+  select.param {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 14px;
+  }
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .grid-nutrients {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .grid-nutrients div label {
+    font-weight: bold;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .grid-nutrients div input {
+    width: 100%;
+    padding: 8px;
+    text-align: right;
+  }
+
+  .form-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .btn-save {
+    background: var(--clr-success);
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-save:hover { background: var(--clr-success-hover); }
+  .btn-cancel {
+    background: #6c757d;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  .btn-cancel:hover { background: #5a6268; }
+
+  @media (max-width:600px){
+    th, td { font-size: 12px; padding: 8px; }
+    .actions button { font-size: 11px; padding: 4px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Parámetros Nutricionales Objetivo</h2>
+
+  <!-- Hidden checkbox to toggle form -->
+  <input type="checkbox" id="toggleParam" />
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div>
+      <label for="filtro-tipo">Tipo de Ave</label>
+      <select id="filtro-tipo" class="param">
+        <option value="">Todos</option>
+        <option value="pollo">Pollo de engorde</option>
+        <option value="ponedora">Gallina ponedora</option>
+        <option value="reproductora">Reproductora</option>
+      </select>
+    </div>
+    <div>
+      <label for="filtro-etapa">Etapa</label>
+      <select id="filtro-etapa" class="param">
+        <option value="">Todas</option>
+        <option value="inicio">Inicio</option>
+        <option value="crecimiento">Crecimiento</option>
+        <option value="produccion">Producción / Postura</option>
+      </select>
+    </div>
+    <label for="toggleParam" class="btn-new">Nuevo Parámetro</label>
+  </div>
+
+  <!-- Table listing existing parameter sets -->
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo Ave</th>
+        <th>Etapa</th>
+        <th>Prot% Min</th>
+        <th>Prot% Máx</th>
+        <th>Energía Min</th>
+        <th>Energía Máx</th>
+        <th>Ca% Min</th>
+        <th>P% Min</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pollo engorde</td>
+        <td>Inicio</td>
+        <td>20.0</td>
+        <td>23.0</td>
+        <td>3000</td>
+        <td>3200</td>
+        <td>1.00</td>
+        <td>0.45</td>
+        <td class="actions">
+          <button class="btn-ver">Ver</button>
+          <button class="btn-edit">Editar</button>
+          <button class="btn-del">Eliminar</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Gallina ponedora</td>
+        <td>Producción</td>
+        <td>16.0</td>
+        <td>18.0</td>
+        <td>2700</td>
+        <td>2900</td>
+        <td>3.50</td>
+        <td>0.45</td>
+        <td class="actions">
+          <button class="btn-ver">Ver</button>
+          <button class="btn-edit">Editar</button>
+          <button class="btn-del">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Form panel -->
+  <div class="form-panel">
+    <h3>Nuevo / Editar Parámetro Nutricional</h3>
+    <form>
+      <label class="field-label" for="tipo-ave">Tipo de Ave</label>
+      <select id="tipo-ave" name="tipo-ave" class="param">
+        <option value="">Seleccionar...</option>
+        <option value="pollo">Pollo de engorde</option>
+        <option value="ponedora">Gallina ponedora</option>
+        <option value="reproductora">Reproductora</option>
+      </select>
+
+      <label class="field-label" for="etapa">Etapa de Desarrollo</label>
+      <select id="etapa" name="etapa" class="param">
+        <option value="">Seleccionar...</option>
+        <option value="inicio">Inicio</option>
+        <option value="crecimiento">Crecimiento</option>
+        <option value="produccion">Producción / Postura</option>
+      </select>
+
+      <!-- Nutrient grid -->
+      <div class="grid-nutrients">
+        <div>
+          <label for="prot-min">Prot% Min</label>
+          <input type="number" step="0.01" id="prot-min" name="prot-min" />
+        </div>
+        <div>
+          <label for="prot-max">Prot% Máx</label>
+          <input type="number" step="0.01" id="prot-max" name="prot-max" />
+        </div>
+        <div>
+          <label for="ener-min">Energía Min (Kcal/kg)</label>
+          <input type="number" step="1" id="ener-min" name="ener-min" />
+        </div>
+        <div>
+          <label for="ener-max">Energía Máx (Kcal/kg)</label>
+          <input type="number" step="1" id="ener-max" name="ener-max" />
+        </div>
+        <div>
+          <label for="ca-min">Calcio% Min</label>
+          <input type="number" step="0.01" id="ca-min" name="ca-min" />
+        </div>
+        <div>
+          <label for="p-min">Fósforo% Min</label>
+          <input type="number" step="0.01" id="p-min" name="p-min" />
+        </div>
+        <div>
+          <label for="fibra-max">Fibra% Máx</label>
+          <input type="number" step="0.01" id="fibra-max" name="fibra-max" />
+        </div>
+        <div>
+          <label for="grasa-max">Grasa% Máx (opc.)</label>
+          <input type="number" step="0.01" id="grasa-max" name="grasa-max" />
+        </div>
+      </div><!-- /.grid-nutrients -->
+
+      <label class="field-label" for="observaciones">Notas / Observaciones Técnicas</label>
+      <textarea id="observaciones" name="observaciones" placeholder="Rangos basados en guía nutricional comercial, clima tropical, fase 0-14 días, etc."></textarea>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-save">Guardar Parámetros</button>
+        <label for="toggleParam" class="btn-cancel" role="button" tabindex="0">Cancelar</label>
+      </div>
+    </form>
+  </div><!-- /.form-panel -->
+</div><!-- /.container -->
+</body>
+</html>

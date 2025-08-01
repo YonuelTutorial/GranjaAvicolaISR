@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Condiciones Especiales</title>
+<style>
+  :root {
+    --clr-bg: #f4f6f8;
+    --clr-card: #ffffff;
+    --clr-border: #dcdfe3;
+    --clr-primary: #007bff;
+    --clr-primary-hover: #0069d9;
+    --clr-success: #28a745;
+    --clr-success-hover: #218838;
+    --clr-info: #17a2b8;
+    --clr-info-hover: #138496;
+    --clr-danger: #dc3545;
+    --clr-danger-hover: #c82333;
+    --radius: 8px;
+    --shadow: 0 0 10px rgba(0,0,0,.08);
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: var(--clr-bg);
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: auto;
+    background: var(--clr-card);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  /* --- Filter/Search Bar --- */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .filter-bar input[type="text"] {
+    flex: 1 1 240px;
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+  }
+  .filter-bar select {
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+  }
+  .btn-new {
+    padding: 10px 16px;
+    background: var(--clr-success);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-new:hover {
+    background: var(--clr-success-hover);
+  }
+
+  /* --- Table --- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+  }
+  th, td {
+    border: 1px solid var(--clr-border);
+    padding: 10px;
+    text-align: left;
+  }
+  th {
+    background: var(--clr-primary);
+    color: #fff;
+    text-align: center;
+  }
+  td.status {
+    text-align: center;
+    font-weight: bold;
+  }
+  .status-activa { color: #28a745; }
+  .status-inactiva { color: #dc3545; }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  .actions button {
+    padding: 5px 10px;
+    font-size: 13px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: #fff;
+  }
+  .btn-ver     { background: var(--clr-info); }
+  .btn-ver:hover { background: var(--clr-info-hover); }
+  .btn-edit    { background: var(--clr-primary); }
+  .btn-edit:hover { background: var(--clr-primary-hover); }
+  .btn-del     { background: var(--clr-danger); }
+  .btn-del:hover { background: var(--clr-danger-hover); }
+
+  /* --- Inline drawer / form panel toggle (CSS only) --- */
+  #toggleForm {
+    display: none;
+  }
+  .form-panel {
+    margin-top: 30px;
+    padding: 25px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    background: #fafbfc;
+    display: none;
+  }
+  #toggleForm:checked ~ .form-panel {
+    display: block;
+  }
+  .form-panel h3 {
+    margin-top: 0;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  input[type="text"],
+  textarea,
+  select {
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 14px;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  .form-row-inline {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .form-row-inline > div {
+    flex: 1 1 180px;
+  }
+  .form-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn-save {
+    background: var(--clr-success);
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-save:hover {
+    background: var(--clr-success-hover);
+  }
+  .btn-cancel {
+    background: #6c757d;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  .btn-cancel:hover {
+    background: #5a6268;
+  }
+
+  /* Responsive */
+  @media (max-width:600px){
+    th, td { font-size: 13px; }
+    .actions button { font-size: 12px; padding: 4px 8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h2>Gestión de Condiciones Especiales</h2>
+
+    <!-- Toggle hidden checkbox for form display -->
+    <input type="checkbox" id="toggleForm" />
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <input type="text" id="txtBuscar" placeholder="Buscar por nombre..." />
+      <select id="filtrarEstado">
+        <option value="">Todos los estados</option>
+        <option value="activa">Activas</option>
+        <option value="inactiva">Inactivas</option>
+      </select>
+      <!-- Label acts as button to toggle form -->
+      <label for="toggleForm" class="btn-new">Nueva Condición</label>
+    </div>
+
+    <!-- Table List -->
+    <table>
+      <thead>
+        <tr>
+          <th>Condición</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Última Modificación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Estrés Calórico</td>
+          <td>Ajustar energía y electrolitos en clima caliente.</td>
+          <td class="status status-activa">Activa</td>
+          <td>2025-06-20</td>
+          <td class="actions">
+            <button class="btn-ver">Ver</button>
+            <button class="btn-edit">Editar</button>
+            <button class="btn-del">Eliminar</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Enfermedad Digestiva</td>
+          <td>Incrementar fibra soluble y probióticos.</td>
+          <td class="status status-inactiva">Inactiva</td>
+          <td>2025-05-05</td>
+          <td class="actions">
+            <button class="btn-ver">Ver</button>
+            <button class="btn-edit">Editar</button>
+            <button class="btn-del">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Form Panel -->
+    <div class="form-panel">
+      <h3>Nueva / Editar Condición Especial</h3>
+      <form>
+        <label for="cond-nombre">Nombre de la condición</label>
+        <input type="text" id="cond-nombre" name="cond-nombre" placeholder="Ej. Estrés Calórico" />
+
+        <label for="cond-descripcion">Descripción</label>
+        <textarea id="cond-descripcion" name="cond-descripcion" placeholder="Explica cuándo aplica y qué ajustes nutricionales se recomiendan."></textarea>
+
+        <div class="form-row-inline">
+          <div>
+            <label for="cond-estado">Estado</label>
+            <select id="cond-estado" name="cond-estado">
+              <option value="activa">Activa</option>
+              <option value="inactiva">Inactiva</option>
+            </select>
+          </div>
+          <div>
+            <label for="cond-codigo">Código interno (opcional)</label>
+            <input type="text" id="cond-codigo" name="cond-codigo" placeholder="Ej. ESTCAL" />
+          </div>
+        </div>
+
+        <!-- Campos opcionales orientativos para nutrición -->
+        <div class="form-row-inline">
+          <div>
+            <label for="ajuste-energia">% ajuste energía (±)</label>
+            <input type="text" id="ajuste-energia" name="ajuste-energia" placeholder="Ej. -3%" />
+          </div>
+          <div>
+            <label for="ajuste-proteina">% ajuste proteína (±)</label>
+            <input type="text" id="ajuste-proteina" name="ajuste-proteina" placeholder="Ej. +2%" />
+          </div>
+        </div>
+
+        <label for="cond-notas">Notas internas / observaciones técnicas</label>
+        <textarea id="cond-notas" name="cond-notas" placeholder="Notas para el nutricionista o logística."></textarea>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">Guardar Condición</button>
+          <!-- Clicking cancel hides form -->
+          <label for="toggleForm" class="btn-cancel" role="button" tabindex="0">Cancelar</label>
+        </div>
+      </form>
+    </div><!-- /.form-panel -->
+  </div><!-- /.container -->
+</body>
+</html>

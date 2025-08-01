@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Catálogo - Etapas de Desarrollo</title>
+<style>
+  :root {
+    --clr-bg:#f4f6f8;--clr-card:#fff;--clr-border:#dcdfe3;
+    --clr-primary:#007bff;--clr-primary-hover:#0069d9;
+    --clr-success:#28a745;--clr-success-hover:#218838;
+    --clr-danger:#dc3545;--clr-danger-hover:#c82333;
+    --radius:8px;--shadow:0 0 10px rgba(0,0,0,.08);
+  }
+  body{font-family:Arial,sans-serif;background:var(--clr-bg);margin:0;padding:20px;color:#333;}
+  .container{max-width:700px;margin:auto;background:var(--clr-card);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);}
+  h2{text-align:center;margin-top:0;}
+  .back{display:inline-block;margin-bottom:15px;text-decoration:none;color:var(--clr-primary);}
+  .back:hover{text-decoration:underline;}
+  .top-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+  .top-actions input{flex:1 1 200px;padding:10px;border:1px solid var(--clr-border);border-radius:var(--radius);}
+  .btn-new{padding:10px 16px;background:var(--clr-success);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-weight:bold;}
+  .btn-new:hover{background:var(--clr-success-hover);}
+  table{width:100%;border-collapse:collapse;}
+  th,td{border:1px solid var(--clr-border);padding:10px;text-align:center;}
+  th{background:var(--clr-primary);color:#fff;}
+  td.left{text-align:left;}
+  .actions{display:flex;justify-content:center;gap:5px;}
+  .actions button{padding:5px 10px;font-size:13px;border:none;border-radius:var(--radius);color:#fff;cursor:pointer;}
+  .btn-edit{background:var(--clr-primary);} .btn-edit:hover{background:var(--clr-primary-hover);}
+  .btn-del{background:var(--clr-danger);} .btn-del:hover{background:var(--clr-danger-hover);}
+  #toggleForm{display:none;}
+  .form-panel{margin-top:25px;padding:20px;border:1px solid var(--clr-border);border-radius:var(--radius);background:#fafbfc;display:none;}
+  #toggleForm:checked ~ .form-panel{display:block;}
+  label.field{display:block;margin-top:15px;font-weight:bold;}
+  input[type="text"],input[type="number"],textarea{width:100%;padding:10px;margin-top:5px;border:1px solid var(--clr-border);border-radius:var(--radius);}
+  .form-row-inline{display:flex;gap:10px;flex-wrap:wrap;}
+  .form-row-inline>div{flex:1 1 120px;}
+  .form-actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+  .btn-save{background:var(--clr-success);color:#fff;padding:12px 20px;border:none;border-radius:var(--radius);cursor:pointer;font-weight:bold;}
+  .btn-save:hover{background:var(--clr-success-hover);}
+  .btn-cancel{background:#6c757d;color:#fff;padding:12px 20px;border:none;border-radius:var(--clr-radius);cursor:pointer;}
+  .btn-cancel:hover{background:#5a6268;}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">&larr; Volver al menú</a>
+  <h2>Catálogo: Etapas de Desarrollo</h2>
+
+  <!-- Toggle form -->
+  <input type="checkbox" id="toggleForm" />
+
+  <div class="top-actions">
+    <input type="text" placeholder="Buscar etapa..." />
+    <label for="toggleForm" class="btn-new">Nueva Etapa</label>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Días Desde</th>
+        <th>Días Hasta</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="left">Inicio</td>
+        <td>0</td>
+        <td>14</td>
+        <td>Fase inicial postnacimiento.</td>
+        <td class="actions">
+          <button class="btn-edit">Editar</button>
+          <button class="btn-del">Eliminar</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="left">Crecimiento</td>
+        <td>15</td>
+        <td>35</td>
+        <td>Incremento rápido de peso.</td>
+        <td class="actions">
+          <button class="btn-edit">Editar</button>
+          <button class="btn-del">Eliminar</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="left">Producción / Postura</td>
+        <td>36</td>
+        <td>--- </td>
+        <td>Etapa productiva (huevos o engorde final).</td>
+        <td class="actions">
+          <button class="btn-edit">Editar</button>
+          <button class="btn-del">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="form-panel">
+    <h3>Nueva / Editar Etapa</h3>
+    <form>
+      <label class="field" for="etapa-nombre">Nombre</label>
+      <input type="text" id="etapa-nombre" placeholder="Ej. Inicio, Crecimiento..." />
+
+      <div class="form-row-inline">
+        <div>
+          <label class="field" for="etapa-desde">Día Desde</label>
+          <input type="number" id="etapa-desde" min="0" />
+        </div>
+        <div>
+          <label class="field" for="etapa-hasta">Día Hasta (deja vacío si abierto)</label>
+          <input type="number" id="etapa-hasta" min="0" />
+        </div>
+      </div>
+
+      <label class="field" for="etapa-desc">Descripción</label>
+      <textarea id="etapa-desc" placeholder="Notas sobre nutrición, manejo, etc."></textarea>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-save">Guardar</button>
+        <label for="toggleForm" class="btn-cancel" role="button" tabindex="0">Cancelar</label>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

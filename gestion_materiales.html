@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Gestión de Materiales</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+:root{
+  --bg:#f4f6f8;--card:#fff;--b:#dcdfe3;--p:#007bff;--p-h:#0069d9;
+  --suc:#28a745;--suc-h:#218838;--err:#dc3545;--rad:8px;--sh:0 0 10px rgba(0,0,0,.08);
+}
+body{font-family:Arial,sans-serif;background:var(--bg);margin:0;padding:20px;color:#333;}
+.container{max-width:900px;margin:auto;background:var(--card);padding:30px;border-radius:var(--rad);box-shadow:var(--sh);}
+h2{text-align:center;margin-top:0;}
+.top-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.top-actions input{flex:1 1 200px;padding:10px;border:1px solid var(--b);border-radius:var(--rad);}
+.btn-new{padding:10px 16px;background:var(--suc);color:#fff;border:none;border-radius:var(--rad);cursor:pointer;font-weight:bold;}
+.btn-new:hover{background:var(--suc-h);}
+table{width:100%;border-collapse:collapse;}
+th,td{border:1px solid var(--b);padding:10px;text-align:center;}
+th{background:#eef2f5;}
+td.left{text-align:left;}
+.actions{display:flex;justify-content:center;gap:5px;}
+.actions button{padding:5px 10px;font-size:13px;border:none;border-radius:var(--rad);color:#fff;cursor:pointer;}
+.btn-edit{background:var(--p);} .btn-edit:hover{background:var(--p-h);}
+.btn-del{background:var(--err);} .btn-del:hover{background:#c82333;}
+.btn-hist{background:#6c757d;} .btn-hist:hover{background:#5a6268;}
+#toggleMat{display:none;}
+.form-panel{margin-top:25px;padding:20px;border:1px solid var(--b);border-radius:var(--rad);background:#fafbfc;display:none;}
+#toggleMat:checked~.form-panel{display:block;}
+label.field{display:block;margin-top:15px;font-weight:bold;}
+input[type="text"],input[type="number"],textarea,select{width:100%;padding:10px;margin-top:5px;border:1px solid var(--b);border-radius:var(--rad);}
+.inline{display:flex;gap:10px;flex-wrap:wrap;}
+.inline>div{flex:1 1 120px;}
+.chk{margin-top:10px;display:flex;align-items:center;gap:6px;}
+.form-actions{margin-top:20px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+.btn-save{background:var(--suc);color:#fff;padding:12px 20px;border:none;border-radius:var(--rad);font-weight:bold;cursor:pointer;}
+.btn-save:hover{background:var(--suc-h);}
+.btn-cancel{background:#6c757d;color:#fff;padding:12px 20px;border:none;border-radius:var(--rad);cursor:pointer;}
+.btn-cancel:hover{background:#5a6268;}
+.back{display:inline-block;margin-bottom:15px;text-decoration:none;color:var(--p);} .back:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">&larr; Volver</a>
+  <h2>Gestión de Materiales</h2>
+
+  <input type="checkbox" id="toggleMat">
+  <div class="top-actions">
+    <input type="text" placeholder="Buscar material...">
+    <label for="toggleMat" class="btn-new">Nuevo Material</label>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Prot%</th>
+        <th>Energía</th>
+        <th>Precio/kg</th>
+        <th>Activo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="left">Maíz</td>
+        <td>8.50</td>
+        <td>3300</td>
+        <td>0.85</td>
+        <td>Sí</td>
+        <td class="actions">
+          <button class="btn-hist">Historial</button>
+          <button class="btn-edit">Editar</button>
+          <button class="btn-del">Eliminar</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="left">Soya</td>
+        <td>44.00</td>
+        <td>2450</td>
+        <td>0.95</td>
+        <td>Sí</td>
+        <td class="actions">
+          <button class="btn-hist">Historial</button>
+          <button class="btn-edit">Editar</button>
+          <button class="btn-del">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="form-panel">
+    <h3>Nuevo / Editar Material</h3>
+    <form>
+      <label class="field" for="mat-nombre">Nombre</label>
+      <input type="text" id="mat-nombre" required>
+
+      <div class="inline">
+        <div>
+          <label class="field" for="mat-prot">Prot% </label>
+          <input type="number" step="0.01" id="mat-prot">
+        </div>
+        <div>
+          <label class="field" for="mat-ener">Energía (Kcal/kg)</label>
+          <input type="number" step="1" id="mat-ener">
+        </div>
+        <div>
+          <label class="field" for="mat-fibra">Fibra%</label>
+          <input type="number" step="0.01" id="mat-fibra">
+        </div>
+      </div>
+
+      <div class="inline">
+        <div>
+          <label class="field" for="mat-ca">Calcio%</label>
+          <input type="number" step="0.01" id="mat-ca">
+        </div>
+        <div>
+          <label class="field" for="mat-p">Fósforo%</label>
+          <input type="number" step="0.01" id="mat-p">
+        </div>
+        <div>
+          <label class="field" for="mat-precio">Precio/kg</label>
+          <input type="number" step="0.01" id="mat-precio">
+        </div>
+      </div>
+
+      <div class="chk">
+        <input type="checkbox" id="mat-activo" checked>
+        <label for="mat-activo">Activo</label>
+      </div>
+
+      <label class="field" for="mat-obs">Observaciones</label>
+      <textarea id="mat-obs" placeholder="Origen, humedad, lote proveedor..."></textarea>
+
+
+
+      <div class="form-actions">
+        <button type="submit" class="btn-save">Guardar</button>
+        <label for="toggleMat" class="btn-cancel" role="button" tabindex="0">Cancelar</label>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

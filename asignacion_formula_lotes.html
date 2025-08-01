@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Asignar Fórmula a Lotes</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+:root{--bg:#f0f4f8;--card:#fff;--b:#dcdfe3;--p:#007bff;--p-h:#0069d9;--suc:#28a745;--suc-h:#218838;--rad:8px;--sh:0 0 10px rgba(0,0,0,.08);}
+body{font-family:Arial,sans-serif;background:var(--bg);margin:0;padding:20px;color:#333;}
+.container{max-width:900px;margin:auto;background:var(--card);padding:30px;border-radius:var(--rad);box-shadow:var(--sh);}
+h2{text-align:center;margin-top:0;}
+label{display:block;margin-top:15px;margin-bottom:5px;font-weight:bold;}
+select,input[type="date"],input[type="number"]{width:100%;padding:10px;border:1px solid var(--b);border-radius:var(--rad);}
+.radio-row{display:flex;gap:20px;align-items:center;margin:10px 0;}
+.radio-row label{margin:0;font-weight:normal;}
+.lote-list{margin-top:15px;}
+.lote-item{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 10px;border:1px solid var(--b);border-radius:var(--rad);background:#fafbfc;}
+.lote-item small{color:#666;}
+.table-wrap{overflow-x:auto;margin-top:25px;}
+table{width:100%;border-collapse:collapse;}
+th,td{border:1px solid var(--b);padding:8px;text-align:center;}
+th{background:#eef2f5;}
+td.left{text-align:left;}
+.actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+.actions button{padding:12px 20px;border:none;border-radius:var(--rad);font-weight:bold;cursor:pointer;color:#fff;}
+.btn-asignar{background:var(--suc);} .btn-asignar:hover{background:var(--suc-h);}
+.btn-cancel{background:#6c757d;} .btn-cancel:hover{background:#5a6268;}
+.auto-note{font-size:13px;color:#666;margin-top:-8px;margin-bottom:10px;display:block;}
+.back{display:inline-block;margin-bottom:15px;text-decoration:none;color:var(--p);} .back:hover{text-decoration:underline;}
+@media(max-width:600px){th,td{font-size:12px;padding:6px;}}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">&larr; Volver</a>
+  <h2>Asignar Fórmula a Lotes</h2>
+
+  <form>
+    <!-- Modo selección -->
+    <label>Modo Selección</label>
+    <div class="radio-row">
+      <input type="radio" id="modo-auto" name="modo" checked>
+      <label for="modo-auto">Automático (usar fórmula vigente / condición activa)</label>
+    </div>
+    <div class="radio-row">
+      <input type="radio" id="modo-manual" name="modo">
+      <label for="modo-manual">Manual (seleccionar abajo)</label>
+    </div>
+    <span class="auto-note">En modo automático, el sistema evaluará si existe fórmula condicionada vigente.</span>
+
+    <!-- Selección manual -->
+    <label for="formula">Fórmula (si manual)</label>
+    <select id="formula">
+      <option value="">Seleccionar...</option>
+      <option value="fb1">Crecimiento Pollos (Base)</option>
+      <option value="fc1">Crecimiento Pollos + Estrés Calórico (Condicionada)</option>
+      <option value="fb2">Postura 2025 (Base)</option>
+    </select>
+
+    <label for="fecha-inicio">Fecha Inicio</label>
+    <input type="date" id="fecha-inicio" required>
+
+    <label for="fecha-fin">Fecha Fin (opcional)</label>
+    <input type="date" id="fecha-fin">
+
+    <!-- Lotes -->
+    <div class="lote-list">
+      <label>Lotes Disponibles</label>
+      <div class="lote-item">
+        <input type="checkbox" id="lote1">
+        <label for="lote1">Lote A - Pollos engorde (500 aves)</label>
+      </div>
+      <div class="lote-item">
+        <input type="checkbox" id="lote2">
+        <label for="lote2">Lote B - Gallinas ponedoras (300 aves)</label>
+      </div>
+      <div class="lote-item">
+        <input type="checkbox" id="lote3">
+        <label for="lote3">Lote C - Pollos engorde (450 aves)</label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn-asignar">Asignar</button>
+      <a href="index.html" class="btn-cancel">Cancelar</a>
+    </div>
+  </form>
+
+  <!-- Historial de asignaciones (vista rápida) -->
+  <h3 style="margin-top:40px;">Asignaciones Actuales por Lote</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Lote</th>
+          <th>Tipo Ave</th>
+          <th>Fórmula Aplicada</th>
+          <th>Vigencia</th>
+          <th>Aves</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">Lote A</td>
+          <td>Pollo engorde</td>
+          <td>Crec. + Estrés Calórico</td>
+          <td>2025-07-15 a —</td>
+          <td>500</td>
+        </tr>
+        <tr>
+          <td class="left">Lote B</td>
+          <td>Gallina ponedora</td>
+          <td>Postura 2025</td>
+          <td>2025-07-10 a —</td>
+          <td>300</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

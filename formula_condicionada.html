@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Fórmula Condicionada</title>
+<style>
+  :root {
+    --clr-bg: #f4f6f8;
+    --clr-card: #ffffff;
+    --clr-border: #dcdfe3;
+    --clr-primary: #007bff;
+    --clr-primary-hover: #0069d9;
+    --clr-success: #28a745;
+    --clr-success-hover: #218838;
+    --clr-info: #17a2b8;
+    --clr-info-hover: #138496;
+    --clr-danger: #dc3545;
+    --clr-danger-hover: #c82333;
+    --radius: 8px;
+    --shadow: 0 0 10px rgba(0,0,0,.08);
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background: var(--clr-bg);
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  .container {
+    max-width: 1100px;
+    margin: auto;
+    background: var(--clr-card);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  /* Form header controls */
+  .form-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .form-header label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .form-header select,
+  .form-header input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+  }
+  .form-header-full {
+    grid-column: 1 / -1;
+  }
+
+  /* Layout base vs condicionada */
+  .grid-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 25px;
+  }
+  .panel {
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    background: #fafbfc;
+  }
+  .panel h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .panel small {
+    color: #666;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    border: 1px solid var(--clr-border);
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background: #eef2f5;
+  }
+  td.name-col {
+    text-align: left;
+  }
+  input[type="number"] {
+    width: 80px;
+    padding: 4px;
+    text-align: right;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+  }
+
+  .panel-summary {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .panel-summary strong {
+    color: #000;
+  }
+
+  /* Actions */
+  .actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .actions button,
+  .actions label.btn-cancel {
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+  }
+  .btn-copy {
+    background: var(--clr-info);
+  }
+  .btn-copy:hover {
+    background: var(--clr-info-hover);
+  }
+  .btn-save {
+    background: var(--clr-success);
+  }
+  .btn-save:hover {
+    background: var(--clr-success-hover);
+  }
+  .btn-cancel {
+    background: #6c757d;
+    display: inline-block;
+    text-align: center;
+  }
+  .btn-cancel:hover {
+    background: #5a6268;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .form-header {
+      grid-template-columns: 1fr;
+    }
+    .grid-two {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Crear / Editar Fórmula Condicionada</h2>
+
+  <!-- Form header -->
+  <div class="form-header">
+    <div>
+      <label for="formula-base">Fórmula Base</label>
+      <select id="formula-base" name="formula-base">
+        <option value="">Seleccionar...</option>
+        <option value="1">Inicial Pollos (Activa)</option>
+        <option value="2">Postura 2025 (Activa)</option>
+        <option value="3">Crecimiento Intensivo (Histórica)</option>
+      </select>
+    </div>
+    <div>
+      <label for="condicion-especial">Condición Especial</label>
+      <select id="condicion-especial" name="condicion-especial">
+        <option value="">Seleccionar...</option>
+        <option value="1">Estrés Calórico</option>
+        <option value="2">Enfermedad Digestiva</option>
+        <option value="3">Alta Producción</option>
+      </select>
+    </div>
+
+    <div class="form-header-full">
+      <label for="fecha-inicio">Fecha Inicio Vigencia</label>
+      <input type="date" id="fecha-inicio" name="fecha-inicio">
+    </div>
+
+    <div class="form-header-full">
+      <label for="fecha-fin">Fecha Fin Vigencia (opcional)</label>
+      <input type="date" id="fecha-fin" name="fecha-fin">
+    </div>
+  </div><!-- /.form-header -->
+
+  <!-- Panels side-by-side -->
+  <div class="grid-two">
+    <!-- Base -->
+    <div class="panel">
+      <h3>Fórmula Base (Referencia)</h3>
+      <small>Estos valores son de solo lectura; sirven como guía.</small>
+      <table>
+        <thead>
+          <tr>
+            <th>Ingrediente</th>
+            <th>% Base</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name-col">Maíz</td>
+            <td>55.00</td>
+          </tr>
+          <tr>
+            <td class="name-col">Soya</td>
+            <td>30.00</td>
+          </tr>
+          <tr>
+            <td class="name-col">Premezcla</td>
+            <td>15.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="panel-summary">
+        <strong>Proteína estimada:</strong> 18.2%<br>
+        <strong>Energía (Kcal/kg):</strong> 3100<br>
+      </div>
+    </div>
+
+    <!-- Condicionada editable -->
+    <div class="panel">
+      <h3>Fórmula Condicionada (Editable)</h3>
+      <small>Ajusta los porcentajes para la condición seleccionada.</small>
+      <form id="form-condicionada">
+        <table>
+          <thead>
+            <tr>
+              <th>Ingrediente</th>
+              <th>% Condición</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name-col">Maíz</td>
+              <td><input type="number" step="0.01" name="pct_maiz" value="52.00" /></td>
+            </tr>
+            <tr>
+              <td class="name-col">Soya</td>
+              <td><input type="number" step="0.01" name="pct_soya" value="32.00" /></td>
+            </tr>
+            <tr>
+              <td class="name-col">Premezcla</td>
+              <td><input type="number" step="0.01" name="pct_premezcla" value="14.00" /></td>
+            </tr>
+            <tr>
+              <td class="name-col">Electrolitos</td>
+              <td><input type="number" step="0.01" name="pct_electrolitos" value="2.00" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="panel-summary">
+          <strong>Suma %:</strong> <!-- backend calcula --> 100.00<br>
+          <strong>Proteína estimada:</strong> ~18.5%<br>
+          <strong>Energía estimada:</strong> ~3050 Kcal/kg<br>
+        </div>
+      </form>
+    </div>
+  </div><!-- /.grid-two -->
+
+  <!-- Observaciones -->
+  <div style="margin-top:25px;">
+    <label for="observaciones" style="font-weight:bold;display:block;margin-bottom:5px;">Observaciones / Justificación Técnica</label>
+    <textarea id="observaciones" name="observaciones" style="width:100%;min-height:100px;padding:10px;border:1px solid var(--clr-border);border-radius:var(--radius);resize:vertical;" placeholder="Ej. Ajuste para estrés calórico: reducimos energía neta y añadimos electrolitos..."></textarea>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <!-- Copy-from-base: necesita JS/Backend; aquí placeholder -->
+    <button type="button" class="btn-copy" title="Copiar composición de la fórmula base como punto de partida">Copiar Base</button>
+    <button type="submit" form="form-condicionada" class="btn-save">Guardar Fórmula Condicionada</button>
+    <a href="condiciones_especiales.html" class="btn-cancel">Cancelar</a>
+  </div>
+</div><!-- /.container -->
+</body>
+</html>

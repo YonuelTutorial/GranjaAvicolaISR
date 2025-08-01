@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Auditoría Global</title>
+<style>
+  :root {
+    --clr-bg:#eef2f5;--clr-card:#fff;--clr-border:#dcdfe3;
+    --clr-primary:#007bff;--clr-primary-hover:#0069d9;
+    --clr-success:#28a745;--clr-danger:#dc3545;--clr-muted:#6c757d;
+    --radius:8px;--shadow:0 0 10px rgba(0,0,0,.08);
+  }
+  body{font-family:Arial,sans-serif;background:var(--clr-bg);margin:0;padding:20px;color:#333;}
+  .container{max-width:1100px;margin:auto;background:var(--clr-card);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);}
+  h2{text-align:center;margin-top:0;}
+  .back{display:inline-block;margin-bottom:15px;text-decoration:none;color:var(--clr-primary);}
+  .back:hover{text-decoration:underline;}
+
+  /* Filters */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:25px;}
+  .filters label{font-weight:bold;display:block;margin-bottom:5px;}
+  .filters select,.filters input[type="date"],.filters input[type="text"]{width:100%;padding:10px;border:1px solid var(--clr-border);border-radius:var(--radius);}
+  .btn-filtrar{grid-column:1/-1;justify-self:start;padding:12px 24px;background:var(--clr-primary);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-weight:bold;}
+  .btn-filtrar:hover{background:var(--clr-primary-hover);}
+
+  /* Results */
+  .results-info{margin-bottom:10px;font-size:14px;color:#555;}
+  table{width:100%;border-collapse:collapse;margin-top:5px;}
+  th,td{border:1px solid var(--clr-border);padding:10px;text-align:center;}
+  th{background:var(--clr-primary);color:#fff;}
+  td.left{text-align:left;}
+  .status-active{color:var(--clr-success);font-weight:bold;}
+  .status-closed{color:var(--clr-danger);font-weight:bold;}
+  .status-base{color:var(--clr-muted);font-style:italic;}
+
+  /* Details */
+  details{margin-top:15px;background:#fafbfc;border:1px solid var(--clr-border);border-radius:var(--radius);padding:10px;}
+  details summary{cursor:pointer;font-weight:bold;outline:none;}
+  .detail-table{width:100%;border-collapse:collapse;margin-top:10px;}
+  .detail-table th,.detail-table td{border:1px solid var(--clr-border);padding:8px;text-align:center;}
+  .detail-table th{background:#eef2f5;}
+
+  @media(max-width:600px){
+    th,td{font-size:12px;padding:8px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">&larr; Volver al menú</a>
+  <h2>Auditoría Global</h2>
+
+  <!-- Filters -->
+  <form class="filters">
+    <div>
+      <label for="entidad">Entidad</label>
+      <select id="entidad" name="entidad">
+        <option value="">Seleccionar...</option>
+        <option value="material">Material</option>
+        <option value="formula">Fórmula Base</option>
+        <option value="formula_cond">Fórmula Condicionada</option>
+        <option value="param_nutri">Parámetro Nutricional</option>
+        <option value="condicion">Condición Especial</option>
+      </select>
+    </div>
+    <div>
+      <label for="filtro-nombre">Nombre / Código</label>
+      <input type="text" id="filtro-nombre" name="filtro-nombre" placeholder="Ej. Maíz, Inicial Pollos..." />
+    </div>
+    <div>
+      <label for="fecha-consulta">Fecha a Consultar</label>
+      <input type="date" id="fecha-consulta" name="fecha-consulta" />
+    </div>
+    <button type="submit" class="btn-filtrar">Consultar</button>
+  </form>
+
+  <!-- Results summary (demo) -->
+  <div class="results-info">
+    Resultados para: <strong>Fórmula Condicionada</strong> / “Estrés Calórico” al <strong>2025-07-10</strong>.
+  </div>
+
+  <!-- Results table (summary rows) -->
+  <table>
+    <thead>
+      <tr>
+        <th>Entidad</th>
+        <th>Nombre</th>
+        <th>Vigencia</th>
+        <th>Estado en Fecha</th>
+        <th>Detalle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Fórmula Condicionada</td>
+        <td>Pollo Crecimiento + Estrés Calórico</td>
+        <td>2025-06-01 a 2025-08-31</td>
+        <td class="status-active">Activa</td>
+        <td><a href="#det1">Ver</a></td>
+      </tr>
+      <tr>
+        <td>Parámetro Nutricional</td>
+        <td>Pollo Crecimiento (Rangos)</td>
+        <td>2025-01-01 a —</td>
+        <td class="status-active">Vigente</td>
+        <td><a href="#det2">Ver</a></td>
+      </tr>
+      <tr>
+        <td>Material</td>
+        <td>Maíz</td>
+        <td>Precio vigente desde 2025-05-15</td>
+        <td class="status-active">En uso</td>
+        <td><a href="#det3">Ver</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Details blocks -->
+  <details id="det1">
+    <summary>Detalle: Pollo Crecimiento + Estrés Calórico</summary>
+    <div style="margin-top:10px;">
+      ¡Condición activa en la fecha consultada! Ajustes sobre fórmula base “Crecimiento Pollos v2025-05-10”.
+    </div>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Ingrediente</th>
+          <th>% Base</th>
+          <th>% Condición</th>
+          <th>Diferencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Maíz</td><td>55.00</td><td>52.00</td><td>-3.00</td></tr>
+        <tr><td>Soya</td><td>30.00</td><td>32.00</td><td>+2.00</td></tr>
+        <tr><td>Premezcla</td><td>15.00</td><td>14.00</td><td>-1.00</td></tr>
+        <tr><td>Electrolitos</td><td>0.00</td><td>2.00</td><td>+2.00</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details id="det2">
+    <summary>Detalle: Parámetros Nutricionales Pollo Crecimiento</summary>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Prot% Min</th><th>Prot% Máx</th><th>Energía Min</th><th>Energía Máx</th><th>Ca% Min</th><th>P% Min</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>19.0</td><td>21.0</td><td>3000</td><td>3200</td><td>1.00</td><td>0.45</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:14px;color:#555;">
+      Fuente: Guía Nutricional 2025. Aplica desde 2025-01-01 (sin fin definido).
+    </div>
+  </details>
+
+  <details id="det3">
+    <summary>Detalle: Material Maíz</summary>
+    <table class="detail-table">
+      <thead>
+        <tr><th>Proteína%</th><th>Energía</th><th>Fibra%</th><th>Calcio%</th><th>Fósforo%</th><th>Precio/kg</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>8.50</td><td>3300</td><td>2.20</td><td>0.02</td><td>0.28</td><td>0.85</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:14px;color:#555;">
+      Precio vigente desde 2025-05-15. Último cambio por usuario: admin.
+    </div>
+  </details>
+</div>
+</body>
+</html>
